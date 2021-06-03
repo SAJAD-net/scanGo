@@ -40,9 +40,9 @@ func portScan(all bool, addr string, port int) {
 	wg.Wait()
 	sort.Strings(opens)
 	if len(opens) > 0 {
-		fmt.Printf("open's ports of %s\n", addr)
+		fmt.Println("open's ports of", addr)
 		for open := range opens {
-			fmt.Println(opens[open])
+			fmt.Printf("%d\n", opens[open])
 		}
 
 	}else {
