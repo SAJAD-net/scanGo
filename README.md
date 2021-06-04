@@ -1,10 +1,9 @@
-#poiseScan
+# scanGo
 
-##well, this is a tool for scan ports
+## well, scanGo is a great tool for scanning ports
 
-##how to run:
+## how to run:
 
-	go run poiseScan [ARGS]
-	go run poiseScan.go -h --> help
+	go run scanGo.go [ARGS]
 
-##my email : sajadsajad.sch@gmail.com
+## my email : sajadsajad.sch@gmail.com
