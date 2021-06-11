@@ -6,4 +6,3 @@
 
 	go run scanGo.go [ARGS]
 
-## my email : sajadsajad.sch@gmail.com
