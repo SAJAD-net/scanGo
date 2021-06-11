@@ -42,7 +42,7 @@ func portScan(all bool, addr string, port int) {
 	if len(opens) > 0 {
 		fmt.Println("open's ports of", addr)
 		for open := range opens {
-			fmt.Printf("%d\n", opens[open])
+			fmt.Printf("%s", opens[open])
 		}
 
 	}else {
