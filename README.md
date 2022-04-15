@@ -1,8 +1,7 @@
 # scanGo <img src="https://img.shields.io/badge/License-GPLv3-blue"></img>   <img src="https://img.shields.io/badge/go-up%20to%20date-red"></img>  <img src="https://img.shields.io/badge/version-0.2-yellow"></img>
 
 ## *port scanner tool*
-### *it's a port scanner with golang.*
-### *can to scans one port of a url or all ports on that.*
+### it's a simple open source port scanner
 
 ## *install*
 
