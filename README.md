@@ -1,4 +1,4 @@
-# scanGo <img src="https://img.shields.io/badge/License-GPLv3-blue"></img>   <img src="https://img.shields.io/badge/go-up%20to%20date-red"></img>  <img src="https://img.shields.io/badge/version-0.2-yellow"></img>
+# scanGo <img src="https://img.shields.io/badge/License-GPLv3-blue"></img>   <img src="https://img.shields.io/badge/go-up%20to%20date-red"></img>  <img src="https://img.shields.io/badge/version-0.3-yellow"></img>
 
 ## port scanner tool
 ### it's a simple open source port scanner
