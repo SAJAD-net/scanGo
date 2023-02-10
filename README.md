@@ -9,7 +9,7 @@
 	go build app/scanGo.go
 
 ## TODO
-<li> Smart scan (scan important ports) </li>
-<li> Calculate the execution time
+- [ ] Smart scan (scan important ports)
+- [ ] Calculate the execution time
 
 	
