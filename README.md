@@ -3,14 +3,13 @@
 ## port scanner tool
 ### it's a simple open source port scanner
 
-## *install*
-
+## How to use
 	git clone https://github.com/SAJAD-net/scanGo.git
 	cd scanGo
 	go build app/scanGo.go
 
-## *TODO*
+## TODO
 <li> Smart scan (scan important ports) </li>
-<li> Calculate the time
+<li> Calculate the execution time
 
 	
