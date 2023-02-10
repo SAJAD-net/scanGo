@@ -6,65 +6,74 @@ import (
 "os"
 "strconv"
 "sync"
+"time"
 "sort"
 )
 
-func portScan(all bool, addr string, port int) {
-	start := 1
-	end := 1024
-	sp := &start
-	ep := &end
+func scango(all bool, addr string) {
+	start, end := 1, 65535
+	sp, ep := &start, &end
+	
 	if all == false {
-		*sp = port
-		*ep = port
+		args := os.Args
+		port, _ := strconv.Atoi(args[3])
+		*sp, *ep = port, port
 	}
+	
 	var wg sync.WaitGroup
-	var opens []string
-	var closes []string
+	var open []string
+
 	for start=start; start <= end; start++ {
 		wg.Add(1)
+
 		go func(start int, address string, all bool) {
 			defer wg.Done()
+			
 			address = fmt.Sprintf("%s:%d", addr, start)
-			_, err := net.Dial("tcp", address)
+			_, err := net.DialTimeout("tcp", address,  3 * time.Second)
+			
 			if err == nil {
-				op:=fmt.Sprintf("%s -> port %d open\n", addr, start)
-				opens=append(opens, op)
-			}else{
-				cl:=fmt.Sprintf("%s -> port %d close\n", addr, start)
-				closes=append(closes, cl)
+				element := fmt.Sprintf("[OK] %s : port %d", addr, start)
+				open = append(open, element)
 			}
 		}(start, addr, all)
-
 	}
 	wg.Wait()
-	sort.Strings(opens)
-	if len(opens) > 0 {
-		fmt.Println("open's ports of", addr)
-		for open := range opens {
-			fmt.Printf("%s", opens[open])
-		}
-
+	
+	if len(open) > 0 {
+		sort.Strings(open)
+		for _, element := range open {
+        		fmt.Println(element)
+    		}			
 	}else {
-		fmt.Printf("isn't any opens ports of %s !\n", addr)
+		fmt.Println("[!] No open port : ",addr)
 	}
+
+}
+
+func help() {
+	fmt.Println("ScanGo:\n\t scango -o [IP] [port]")
+	fmt.Println("\t scango -a [IP]")
+	os.Exit(0)
 }
 
 func main() {
 	args := os.Args
 	all := true
 	a := &all
-	if len(args) > 1{
+	
+	if len(args) >= 2 {
 		if args[1] == "-o" {
 			*a = false
 		}else if args[1] == "-a"{
 			*a = true
+		}else {
+			help()
 		}
+
 		addr := args[2]
-		po := args[3]
-		port, _ := strconv.Atoi(po)
-		portScan(all, addr, port)
+		scango(all, addr)
 	}else{
-		fmt.Println("enter valid args !")
+		help()
 	}
 }
