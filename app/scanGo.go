@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/akamensky/argparse"
 	"net"
 	"os"
-	"github.com/akamensky/argparse"
 	"sort"
 	"sync"
 	"time"
