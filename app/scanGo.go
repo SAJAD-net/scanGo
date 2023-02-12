@@ -1,52 +1,49 @@
 package main
 
 import (
-"fmt"
-"net"
-"os"
-"strconv"
-"sync"
-"time"
-"sort"
+	"fmt"
+	"net"
+	"os"
+	"github.com/akamensky/argparse"
+	"sort"
+	"sync"
+	"time"
 )
 
-func scango(all bool, addr string) {
+func scango(addr string, port int) {
 	start, end := 1, 65535
-	sp, ep := &start, &end
-	
-	if all == false {
-		args := os.Args
-		port, _ := strconv.Atoi(args[3])
-		*sp, *ep = port, port
+
+	if port != 0 {
+		start, end = port, port
 	}
-	
+
 	var wg sync.WaitGroup
 	var open []string
 
-	for start=start; start <= end; start++ {
+	for start = start; start <= end; start++ {
 		wg.Add(1)
 
-		go func(start int, address string, all bool) {
+		go func(start int, address string) {
 			defer wg.Done()
-			
+
 			address = fmt.Sprintf("%s:%d", addr, start)
-			_, err := net.DialTimeout("tcp", address,  3 * time.Second)
-			
+			_, err := net.DialTimeout("tcp", address, 3*time.Second)
+
 			if err == nil {
 				element := fmt.Sprintf("[OK] %s : port %d", addr, start)
 				open = append(open, element)
 			}
-		}(start, addr, all)
+		}(start, addr)
 	}
 	wg.Wait()
-	
+
 	if len(open) > 0 {
 		sort.Strings(open)
 		for _, element := range open {
-        		fmt.Println(element)
-    		}			
-	}else {
-		fmt.Println("[!] No open port : ",addr)
+			fmt.Println(element)
+		}
+	} else {
+		fmt.Println("[!] No open port : ", addr)
 	}
 
 }
@@ -58,22 +55,34 @@ func help() {
 }
 
 func main() {
-	args := os.Args
-	all := true
-	a := &all
-	
-	if len(args) >= 2 {
-		if args[1] == "-o" {
-			*a = false
-		}else if args[1] == "-a"{
-			*a = true
-		}else {
-			help()
-		}
 
-		addr := args[2]
-		scango(all, addr)
-	}else{
-		help()
+	var addr string
+	var port int
+
+	parser := argparse.NewParser("ScanGo", "Simple and fast port scanner.")
+	ip_arg := parser.String("i", "ip", &argparse.Options{Required: true, Help: "ip address"})
+	all_arg := parser.Flag("a", "all", &argparse.Options{Required: false, Help: "all possible ports"})
+	one_arg := parser.Int("o", "one", &argparse.Options{Required: false, Help: "only a specific port"})
+
+	err := parser.Parse(os.Args)
+
+	if err != nil {
+		fmt.Print(parser.Usage(err))
+		os.Exit(0)
+
+	} else if *ip_arg != "" {
+		addr = *ip_arg
+
+		if *all_arg {
+			port = 0
+		} else if *one_arg != 0 {
+			port = *one_arg
+		} else {
+			fmt.Print(parser.Usage(err))
+			os.Exit(0)
+		}
 	}
+
+	scango(addr, port)
+
 }
